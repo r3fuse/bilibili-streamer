@@ -4,3 +4,4 @@ pub mod danmaku;
 pub mod live;
 pub mod user;
 pub mod window;
+pub mod os;

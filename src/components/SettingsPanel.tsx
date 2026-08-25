@@ -6,6 +6,7 @@ import {
     getVersion,
     installUpdate,
     setAppConfig,
+    getCurrentOS,
 } from "@/hooks/useTauri";
 
 export default function SettingsPanel() {
@@ -16,11 +17,15 @@ export default function SettingsPanel() {
     const [updateStatus, setUpdateStatus] = useState("");
     const [disableDmabufferRenderer, setDisabledDmabufferRenderer] =
         useState(true);
+    const [os, setOS] = useState("");
 
     useEffect(() => {
-        getVersion()
-            .then(setVersion)
-            .catch(() => {});
+        (getCurrentOS()
+            .then((value) => setOS(value))
+            .catch(() => {}),
+            getVersion()
+                .then(setVersion)
+                .catch(() => {}));
         getAppConfig()
             .then((cfg) => {
                 console.log(cfg);
@@ -82,28 +87,32 @@ export default function SettingsPanel() {
                         偏好设置
                     </h2>
                     <div className="space-y-1">
-                        <div className="flex items-center justify-between py-3 border-b border-stone-200 dark:border-stone-800">
-                            <div>
-                                <div className="text-[13px] font-medium text-stone-800 dark:text-stone-200">
-                                    关闭DMABUFF渲染
+                        {os == "linux" ? (
+                            <div className="flex items-center justify-between py-3 border-b border-stone-200 dark:border-stone-800">
+                                <div>
+                                    <div className="text-[13px] font-medium text-stone-800 dark:text-stone-200">
+                                        关闭DMABUFF渲染
+                                    </div>
+                                    <div className="text-[12px] text-stone-400 mt-0.5">
+                                        输入框卡死或页面黑屏时可尝试开启(仅linux可用)
+                                        <span className="text-[12px] text-stone-900 mt-0.5 text-red-600">
+                                            linux默认开启，谨慎关闭
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="text-[12px] text-stone-400 mt-0.5">
-                                    输入框卡死或页面黑屏时可尝试开启(仅linux可用)
-                                    <span className="text-[12px] text-stone-900 mt-0.5 text-red-600">
-                                        linux默认开启，谨慎关闭
-                                    </span>
-                                </div>
+                                <button
+                                    type="button"
+                                    onClick={toggleDisabledDmabufferRenderer}
+                                    className={`relative w-10 h-6 rounded-full transition ${disableDmabufferRenderer ? "bg-[#34C759]" : "bg-stone-300 dark:bg-stone-600"}`}
+                                >
+                                    <span
+                                        className={`absolute top-1 w-4 h-4 rounded-full bg-white transition ${disableDmabufferRenderer ? "left-5" : "left-1"}`}
+                                    />
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={toggleDisabledDmabufferRenderer}
-                                className={`relative w-10 h-6 rounded-full transition ${disableDmabufferRenderer ? "bg-[#34C759]" : "bg-stone-300 dark:bg-stone-600"}`}
-                            >
-                                <span
-                                    className={`absolute top-1 w-4 h-4 rounded-full bg-white transition ${disableDmabufferRenderer ? "left-5" : "left-1"}`}
-                                />
-                            </button>
-                        </div>
+                        ) : (
+                            ""
+                        )}
                         <div className="flex items-center justify-between py-3 border-b border-stone-200 dark:border-stone-800">
                             <div>
                                 <div className="text-[13px] font-medium text-stone-800 dark:text-stone-200">

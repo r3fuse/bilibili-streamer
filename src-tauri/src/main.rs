@@ -40,17 +40,6 @@ async fn cleanup_and_exit(app_handle: tauri::AppHandle) {
 }
 
 fn main() {
-    // let dir = directories::ProjectDirs::from("com", "bilibili-streamer", "Bilibili-Streamer")
-    //         .ok_or_else(|| anyhow::anyhow!("Failed to get project dirs"))?;
-    //     let config_dir = dir.config_dir();
-    //     fs::create_dir_all(config_dir)?;
-    //     let path = config_dir.join("config.toml");
-    //     if !path.exists(){
-    //         #[cfg(target_os = "linux")]
-    //         std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER","1");
-    //     }else {
-            
-    //     }
     #[cfg(target_os = "linux")]
     {
         let value = match ConfigStore::new(){
@@ -275,6 +264,7 @@ fn main() {
             bilibili_streamer_lib::commands::config::get_app_config,
             bilibili_streamer_lib::commands::config::set_app_config,
             bilibili_streamer_lib::commands::config::get_version,
+            bilibili_streamer_lib::commands::os::get_current_os
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application");
