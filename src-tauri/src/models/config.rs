@@ -20,7 +20,7 @@ impl Default for FloatWindowState {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AppConfig {
     pub current_uid: Option<u64>,
     pub users: HashMap<String, UserConfig>,
@@ -28,9 +28,27 @@ pub struct AppConfig {
     pub min_to_tray: bool,
     #[serde(default)]
     pub float_window: Option<FloatWindowState>,
+    #[serde(default = "default_disable_dmabuf_renderer")]
+    pub disable_dmabuf_renderer:bool
+}
+
+impl Default for AppConfig {
+    fn default() -> Self {
+         Self {
+            current_uid: None,
+            users: HashMap::new(),
+            min_to_tray: false,
+            float_window: None,
+            disable_dmabuf_renderer: true,
+        }
+    }
 }
 
 fn default_min_to_tray() -> bool {
+    false
+}
+
+fn default_disable_dmabuf_renderer() -> bool {
     true
 }
 

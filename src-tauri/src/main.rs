@@ -40,6 +40,34 @@ async fn cleanup_and_exit(app_handle: tauri::AppHandle) {
 }
 
 fn main() {
+    // let dir = directories::ProjectDirs::from("com", "bilibili-streamer", "Bilibili-Streamer")
+    //         .ok_or_else(|| anyhow::anyhow!("Failed to get project dirs"))?;
+    //     let config_dir = dir.config_dir();
+    //     fs::create_dir_all(config_dir)?;
+    //     let path = config_dir.join("config.toml");
+    //     if !path.exists(){
+    //         #[cfg(target_os = "linux")]
+    //         std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER","1");
+    //     }else {
+            
+    //     }
+    #[cfg(target_os = "linux")]
+    {
+        let value = match ConfigStore::new(){
+            Ok(d)=>{
+                if d.data().disable_dmabuf_renderer{
+                    "1"
+                }else{
+                    "0"
+                }
+            },
+            Err(_)=>"1"
+        };
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER",value);
+    }
+    
+    
+
     tracing_subscriber::fmt()
         .with_file(true)
         .with_line_number(true)
