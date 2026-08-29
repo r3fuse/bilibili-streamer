@@ -267,7 +267,6 @@ fn main() {
             bilibili_streamer_lib::commands::config::get_app_config,
             bilibili_streamer_lib::commands::config::set_app_config,
             bilibili_streamer_lib::commands::config::get_version,
-            bilibili_streamer_lib::commands::os::get_current_os
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application");
