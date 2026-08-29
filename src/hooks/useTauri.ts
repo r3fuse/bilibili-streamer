@@ -166,7 +166,3 @@ export async function openDanmakuFloat(): Promise<void> {
 export async function closeDanmakuFloat(): Promise<void> {
 	return await invoke("close_danmaku_float");
 }
-
-export async function getCurrentOS(): Promise<string> {
-	return await invoke("get_current_os");
-}
