@@ -6,7 +6,6 @@ import {
 	getVersion,
 	installUpdate,
 	setAppConfig,
-	getCurrentOS,
 } from "@/hooks/useTauri";
 
 export default function SettingsPanel() {
@@ -17,19 +16,17 @@ export default function SettingsPanel() {
 	const [updateStatus, setUpdateStatus] = useState("");
 	const [disableDmabufferRenderer, setDisabledDmabufferRenderer] =
 		useState(true);
-	const [os, setOS] = useState("");
+	const [isShow, setIsShow] = useState(false);
 
 	useEffect(() => {
-		getCurrentOS()
-			.then((value) => setOS(value))
-			.catch(() => {}),
-			getVersion()
-				.then(setVersion)
-				.catch(() => {});
+		getVersion()
+			.then(setVersion)
+			.catch(() => {});
 		getAppConfig()
 			.then((cfg) => {
-				console.log(cfg);
-
+				if (cfg.disable_dmabuf_renderer != null) {
+					setIsShow(true);
+				}
 				setMinToTray(cfg.min_to_tray),
 					setDisabledDmabufferRenderer(cfg.disable_dmabuf_renderer);
 			})
@@ -85,7 +82,7 @@ export default function SettingsPanel() {
 						偏好设置
 					</h2>
 					<div className="space-y-1">
-						{os == "linux" ? (
+						{isShow ? (
 							<div className="flex items-center justify-between py-3 border-b border-stone-200 dark:border-stone-800">
 								<div>
 									<div className="text-[13px] font-medium text-stone-800 dark:text-stone-200">

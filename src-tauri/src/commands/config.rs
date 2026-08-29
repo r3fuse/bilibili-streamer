@@ -23,7 +23,7 @@ pub async fn set_app_config(
         config.data_mut().min_to_tray = value;
     }
     if key == "disable_dmabuf_renderer" {
-        config.data_mut().disable_dmabuf_renderer = value
+        config.data_mut().disable_dmabuf_renderer = Some(value)
     }
     config.save().map_err(|e| e.to_string())
 }

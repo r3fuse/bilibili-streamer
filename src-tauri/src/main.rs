@@ -43,8 +43,11 @@ fn main() {
     #[cfg(target_os = "linux")]
     {
         let value = match ConfigStore::new(){
-            Ok(d)=>{
-                if d.data().disable_dmabuf_renderer{
+            Ok(mut config)=>{
+                if config.data().disable_dmabuf_renderer.is_none()
+                || config.data().disable_dmabuf_renderer.is_some_and(|x| x){
+                    config.data_mut().disable_dmabuf_renderer = Some(true);
+                    let _ = config.save();
                     "1"
                 }else{
                     "0"
