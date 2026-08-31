@@ -10,7 +10,7 @@ import {
 
 export default function SettingsPanel() {
 	const { isDark, toggleDark } = useUI();
-	const [minToTray, setMinToTray] = useState(false);
+	const [minToTray, setMinToTray] = useState(true);
 	const [version, setVersion] = useState("");
 	const [checkingUpdate, setCheckingUpdate] = useState(false);
 	const [updateStatus, setUpdateStatus] = useState("");
@@ -26,9 +26,9 @@ export default function SettingsPanel() {
 			.then((cfg) => {
 				if (cfg.disable_dmabuf_renderer != null) {
 					setIsShow(true);
-				}
-				setMinToTray(cfg.min_to_tray),
 					setDisabledDmabufferRenderer(cfg.disable_dmabuf_renderer);
+				}
+				setMinToTray(cfg.min_to_tray);
 			})
 			.catch((e) => console.error("获取配置失败:", e));
 	}, []);

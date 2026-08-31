@@ -24,15 +24,20 @@ impl Default for FloatWindowState {
 pub struct AppConfig {
     pub current_uid: Option<u64>,
     pub users: HashMap<String, UserConfig>,
+    #[serde(default = "default_min_to_tray")]
     pub min_to_tray: bool,
     #[serde(default)]
     pub float_window: Option<FloatWindowState>,
-    pub disable_dmabuf_renderer:Option<bool>
+    pub disable_dmabuf_renderer: Option<bool>,
+}
+
+fn default_min_to_tray() -> bool {
+    true
 }
 
 impl Default for AppConfig {
     fn default() -> Self {
-         Self {
+        Self {
             current_uid: None,
             users: HashMap::new(),
             min_to_tray: false,
@@ -41,7 +46,6 @@ impl Default for AppConfig {
         }
     }
 }
-
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct UserConfig {

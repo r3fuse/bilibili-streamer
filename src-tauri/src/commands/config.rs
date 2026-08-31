@@ -1,11 +1,10 @@
 use crate::state::AppState;
 use serde_json::Value;
 use tauri::State;
-use crate::services::config_store::ConfigStore as CF;
 
 #[tauri::command]
 pub async fn get_app_config(state: State<'_, AppState>) -> Result<Value, String> {
-    let config:tokio::sync::MutexGuard<'_, CF> = state.config.lock().await;
+    let config = state.config.lock().await;
     Ok(serde_json::json!({
         "min_to_tray": config.data().min_to_tray,
         "disable_dmabuf_renderer":config.data().disable_dmabuf_renderer
